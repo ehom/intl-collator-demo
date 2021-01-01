@@ -3,7 +3,9 @@ const APP_NAME = "Intl.Collator Demo";
 document.title = APP_NAME;
 
 const App = () => {
-  const locales = ["en-US", "fr", "de", "zh-CN", "ja-JP", "es", "pl-PL", "tr-TR"];
+  // TODO: run locales through Intl.Collator.getSupportedLocales()
+
+  const locales = ["en-US", "fr", "de", "it-IT", "zh-CN", "ja-JP", "es", "pl-PL", "tr-TR"];
   const processText = (locale, text) => {
     /* console.debug("processText:", locale, text); */
     const result = text.split("\n").sort(Intl.Collator(locale).compare);
