@@ -5,7 +5,17 @@ document.title = APP_NAME;
 var App = function App() {
   // TODO: run locales through Intl.Collator.getSupportedLocales()
 
-  var locales = ["en-US", "fr", "de", "it-IT", "zh-CN", "ja-JP", "es", "pl-PL", "tr-TR"];
+  var locales = {
+    "en-US": "English",
+    "fr": "French",
+    "de": "German",
+    "zh-CN": "Chinese",
+    "ja-JP": "Japanese",
+    "es": "Spanish",
+    "pl-PL": "Polish",
+    "tr-TR": "Turkish"
+  };
+
   var processText = function processText(locale, text) {
     /* console.debug("processText:", locale, text); */
     var result = text.split("\n").sort(Intl.Collator(locale).compare);
@@ -53,11 +63,14 @@ var LocaleSelector = function LocaleSelector(_ref2) {
   var id = _ref2.id,
       locales = _ref2.locales;
 
-  var options = locales.map(function (locale) {
+  var options = Object.keys(locales).map(function (key) {
     return React.createElement(
       "option",
-      null,
-      locale
+      { value: key },
+      locales[key],
+      " (",
+      key,
+      ")"
     );
   });
   return React.createElement(
