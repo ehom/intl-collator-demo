@@ -5,7 +5,17 @@ document.title = APP_NAME;
 const App = () => {
   // TODO: run locales through Intl.Collator.getSupportedLocales()
 
-  const locales = ["en-US", "fr", "de", "it-IT", "zh-CN", "ja-JP", "es", "pl-PL", "tr-TR"];
+  const locales = {
+    "en-US": "English",
+    "fr": "French",
+    "de": "German",
+    "zh-CN": "Chinese",
+    "ja-JP": "Japanese",
+    "es": "Spanish",
+    "pl-PL": "Polish",
+    "tr-TR": "Turkish"
+  };
+
   const processText = (locale, text) => {
     /* console.debug("processText:", locale, text); */
     const result = text.split("\n").sort(Intl.Collator(locale).compare);
@@ -34,8 +44,8 @@ const Banner = ({text}) => {
 };
 
 const LocaleSelector = ({ id, locales }) => {
-  const options = locales.map((locale) => {
-    return <option>{locale}</option>;
+  const options = Object.keys(locales).map((key) => {
+    return <option value={key}>{locales[key]} ({key})</option>;
   });
   return (
     <select id={id} className="form-control">
