@@ -3,9 +3,7 @@ var APP_NAME = "Intl.Collator Demo";
 document.title = APP_NAME;
 
 var App = function App() {
-  // TODO: run locales through Intl.Collator.getSupportedLocales()
-
-  var locales = {
+  var languages = {
     "en-US": "English",
     "fr": "French",
     "de": "German",
@@ -33,18 +31,39 @@ var App = function App() {
     ),
     React.createElement(
       "div",
-      { className: "container border border-light rounded pt-3 pb-2 mb-3" },
-      React.createElement(InputForm, { id: "textInput", locales: locales, onButtonClick: processText })
-    ),
-    React.createElement(
-      "div",
-      { className: "container border border-light rounded pt-3 pb-4" },
+      { className: "row" },
       React.createElement(
         "div",
-        { className: "mb-2" },
-        "Output:"
+        { className: "col-sm-6" },
+        React.createElement(
+          "div",
+          { className: "container border border-light rounded pt-3 pb-2 mb-3" },
+          React.createElement(
+            "div",
+            { className: "mb-2" },
+            "Input:"
+          ),
+          React.createElement(InputForm, {
+            id: "textInput",
+            languages: languages,
+            onButtonClick: processText
+          })
+        )
       ),
-      React.createElement(OutputForm, { id: "results" })
+      React.createElement(
+        "div",
+        { className: "col-sm-6" },
+        React.createElement(
+          "div",
+          { className: "container border border-light rounded pt-3 pb-4" },
+          React.createElement(
+            "div",
+            { className: "mb-2" },
+            "Output:"
+          ),
+          React.createElement(OutputForm, { id: "results" })
+        )
+      )
     )
   );
 };
@@ -59,15 +78,15 @@ var Banner = function Banner(_ref) {
   );
 };
 
-var LocaleSelector = function LocaleSelector(_ref2) {
+var LanguageSelector = function LanguageSelector(_ref2) {
   var id = _ref2.id,
-      locales = _ref2.locales;
+      languages = _ref2.languages;
 
-  var options = Object.keys(locales).map(function (key) {
+  var options = Object.keys(languages).map(function (key) {
     return React.createElement(
       "option",
       { value: key },
-      locales[key],
+      languages[key],
       " (",
       key,
       ")"
@@ -82,10 +101,9 @@ var LocaleSelector = function LocaleSelector(_ref2) {
 
 var InputForm = function InputForm(_ref3) {
   var id = _ref3.id,
-      locales = _ref3.locales,
+      languages = _ref3.languages,
       onButtonClick = _ref3.onButtonClick;
 
-  // todo: add human-friendly language names to the selector
   var handleClick = function handleClick() {
     // console.debug("click");
     var content = document.getElementById("textInput").value;
@@ -109,20 +127,16 @@ var InputForm = function InputForm(_ref3) {
     ),
     React.createElement(
       "div",
-      { className: "row" },
+      { className: "mb-2" },
+      React.createElement(LanguageSelector, { id: "LanguageSelector", languages: languages })
+    ),
+    React.createElement(
+      "div",
+      null,
       React.createElement(
-        "div",
-        { className: "col-sm-4 mb-2" },
-        React.createElement(LocaleSelector, { id: "localeSelector", locales: locales })
-      ),
-      React.createElement(
-        "div",
-        { className: "col-sm-8" },
-        React.createElement(
-          "button",
-          { type: "button", onClick: handleClick },
-          "Sort"
-        )
+        "button",
+        { type: "button", onClick: handleClick },
+        "Sort"
       )
     )
   );
