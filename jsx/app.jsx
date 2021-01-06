@@ -3,9 +3,7 @@ const APP_NAME = "Intl.Collator Demo";
 document.title = APP_NAME;
 
 const App = () => {
-  // TODO: run locales through Intl.Collator.getSupportedLocales()
-
-  const locales = {
+  const languages = {
     "en-US": "English",
     "fr": "French",
     "de": "German",
@@ -28,24 +26,39 @@ const App = () => {
       <div className="jumbotron pt-4 pb-2">
         <Banner text="Intl.Collator demo" />
       </div>
-      <div className="container border border-light rounded pt-3 pb-2 mb-3">
-        <InputForm id="textInput" locales={locales} onButtonClick={processText} />
-      </div>
-      <div className="container border border-light rounded pt-3 pb-4">
-        <div className="mb-2">Output:</div>
-        <OutputForm id="results" />
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="container border border-light rounded pt-3 pb-2 mb-3">
+            <div className="mb-2">Input:</div>
+            <InputForm
+              id="textInput"
+              languages={languages}
+              onButtonClick={processText}
+            />
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="container border border-light rounded pt-3 pb-4">
+            <div className="mb-2">Output:</div>
+            <OutputForm id="results" />
+          </div>
+        </div>
       </div>
     </React.Fragment>
   );
 };
 
-const Banner = ({text}) => {
+const Banner = ({ text }) => {
   return <h4>{text}</h4>;
 };
 
-const LocaleSelector = ({ id, locales }) => {
-  const options = Object.keys(locales).map((key) => {
-    return <option value={key}>{locales[key]} ({key})</option>;
+const LanguageSelector = ({ id, languages }) => {
+  const options = Object.keys(languages).map((key) => {
+    return (
+      <option value={key}>
+        {languages[key]} ({key})
+      </option>
+    );
   });
   return (
     <select id={id} className="form-control">
@@ -54,8 +67,7 @@ const LocaleSelector = ({ id, locales }) => {
   );
 };
 
-const InputForm = ({ id, locales, onButtonClick }) => {
-  // todo: add human-friendly language names to the selector
+const InputForm = ({ id, languages, onButtonClick }) => {
   const handleClick = () => {
     // console.debug("click");
     const content = document.getElementById("textInput").value;
@@ -74,15 +86,13 @@ const InputForm = ({ id, locales, onButtonClick }) => {
           placeholder="Enter a text item on each line, &#13;&#10;specify a language and then click the Sort button"
         />
       </div>
-      <div className="row">
-        <div className="col-sm-4 mb-2">
-          <LocaleSelector id="localeSelector" locales={locales} />
-        </div>
-        <div className="col-sm-8">
-          <button type="button" onClick={handleClick}>
-            Sort
-          </button>
-        </div>
+      <div className="mb-2">
+        <LanguageSelector id="LanguageSelector" languages={languages} />
+      </div>
+      <div>
+        <button type="button" onClick={handleClick}>
+          Sort
+        </button>
       </div>
     </div>
   );
@@ -93,4 +103,3 @@ const OutputForm = ({ id }) => {
 };
 
 ReactDOM.render(<App />, document.getElementById("root"));
-
