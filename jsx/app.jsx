@@ -14,9 +14,9 @@ const App = () => {
     "tr-TR": "Turkish"
   };
 
-  const processText = (locale, text) => {
+  const processText = (language, text) => {
     /* console.debug("processText:", locale, text); */
-    const result = text.split("\n").sort(Intl.Collator(locale).compare);
+    const result = text.split("\n").sort(Intl.Collator(language).compare);
     /* console.debug("result:", result) */
     document.getElementById("results").value = result.join("\n");
   };
@@ -71,9 +71,9 @@ const InputForm = ({ id, languages, onButtonClick }) => {
   const handleClick = () => {
     // console.debug("click");
     const content = document.getElementById("textInput").value;
-    const locale = document.getElementById("localeSelector").value;
+    const language = document.getElementById("languageSelector").value;
 
-    onButtonClick(locale, content);
+    onButtonClick(language, content);
   };
 
   return (
@@ -87,7 +87,7 @@ const InputForm = ({ id, languages, onButtonClick }) => {
         />
       </div>
       <div className="mb-2">
-        <LanguageSelector id="LanguageSelector" languages={languages} />
+        <LanguageSelector id="languageSelector" languages={languages} />
       </div>
       <div>
         <button type="button" onClick={handleClick}>
