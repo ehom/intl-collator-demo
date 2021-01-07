@@ -11,6 +11,7 @@ const App = () => {
     "ja-JP": "Japanese",
     "es": "Spanish",
     "pl-PL": "Polish",
+    "sv-SE": "Swedish",
     "tr-TR": "Turkish"
   };
 
