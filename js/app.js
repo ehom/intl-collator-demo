@@ -14,9 +14,9 @@ var App = function App() {
     "tr-TR": "Turkish"
   };
 
-  var processText = function processText(locale, text) {
+  var processText = function processText(language, text) {
     /* console.debug("processText:", locale, text); */
-    var result = text.split("\n").sort(Intl.Collator(locale).compare);
+    var result = text.split("\n").sort(Intl.Collator(language).compare);
     /* console.debug("result:", result) */
     document.getElementById("results").value = result.join("\n");
   };
@@ -107,9 +107,9 @@ var InputForm = function InputForm(_ref3) {
   var handleClick = function handleClick() {
     // console.debug("click");
     var content = document.getElementById("textInput").value;
-    var locale = document.getElementById("localeSelector").value;
+    var language = document.getElementById("languageSelector").value;
 
-    onButtonClick(locale, content);
+    onButtonClick(language, content);
   };
 
   return React.createElement(
@@ -128,7 +128,7 @@ var InputForm = function InputForm(_ref3) {
     React.createElement(
       "div",
       { className: "mb-2" },
-      React.createElement(LanguageSelector, { id: "LanguageSelector", languages: languages })
+      React.createElement(LanguageSelector, { id: "languageSelector", languages: languages })
     ),
     React.createElement(
       "div",
