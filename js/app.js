@@ -1,152 +1,110 @@
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var APP_NAME = "Intl.Collator Demo";
 
 document.title = APP_NAME;
 
-var App = function App() {
-  var languages = {
-    "en-US": "English",
-    "fr": "French",
-    "de": "German",
-    "zh-CN": "Chinese",
-    "ja-JP": "Japanese",
-    "es": "Spanish",
-    "pl-PL": "Polish",
-    "sv-SE": "Swedish",
-    "tr-TR": "Turkish"
-  };
+var App = function (_React$Component) {
+  _inherits(App, _React$Component);
 
-  var processText = function processText(language, text) {
-    /* console.debug("processText:", locale, text); */
-    var result = text.split("\n").sort(Intl.Collator(language).compare);
-    /* console.debug("result:", result) */
-    document.getElementById("results").value = result.join("\n");
-  };
+  function App(props) {
+    _classCallCheck(this, App);
 
-  return React.createElement(
-    React.Fragment,
-    null,
-    React.createElement(
-      "div",
-      { className: "jumbotron pt-4 pb-2" },
-      React.createElement(Banner, { text: "Intl.Collator demo" })
-    ),
-    React.createElement(
-      "div",
-      { className: "row" },
-      React.createElement(
-        "div",
-        { className: "col-sm-6" },
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this.state = {
+      input: "",
+      language: _this.props.languages[0],
+      result: ""
+    };
+
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(App, [{
+    key: "handleSubmit",
+    value: function handleSubmit(text, language) {
+      console.debug("App: handle Submit", text, language);
+
+      var result = text.split("\n").sort(Intl.Collator(language).compare).join("\n");
+
+      this.setState({
+        input: text,
+        language: language,
+        result: result
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        React.Fragment,
+        null,
         React.createElement(
           "div",
-          { className: "container border border-light rounded pt-3 pb-2 mb-3" },
-          React.createElement(
-            "div",
-            { className: "mb-2" },
-            "Input:"
-          ),
-          React.createElement(InputForm, {
-            id: "textInput",
-            languages: languages,
-            onButtonClick: processText
-          })
-        )
-      ),
-      React.createElement(
-        "div",
-        { className: "col-sm-6" },
+          { className: "jumbotron pt-4 pb-2" },
+          React.createElement(Banner, { text: "Intl.Collator demo" })
+        ),
         React.createElement(
           "div",
-          { className: "container border border-light rounded pt-3 pb-4" },
+          { className: "row" },
           React.createElement(
             "div",
-            { className: "mb-2" },
-            "Output:"
+            { className: "col-sm-6" },
+            React.createElement(
+              "div",
+              { className: "container border border-light round pt-3 pb-3" },
+              React.createElement(
+                "div",
+                { className: "mb-2" },
+                "Input:"
+              ),
+              React.createElement(InputForm, {
+                languages: this.props.languages,
+                onSubmit: this.handleSubmit
+              })
+            )
           ),
-          React.createElement(OutputForm, { id: "results" })
+          React.createElement(
+            "div",
+            { className: "col-sm-6" },
+            React.createElement(
+              "div",
+              { className: "container border border-light round pt-3 pb-3" },
+              React.createElement(
+                "div",
+                { className: "mb-2" },
+                "Output:"
+              ),
+              React.createElement(OutputForm, { text: this.state.result })
+            )
+          )
         )
-      )
-    )
-  );
+      );
+    }
+  }]);
+
+  return App;
+}(React.Component);
+
+var languages = {
+  "en-US": "English",
+  fr: "French",
+  de: "German",
+  "zh-CN": "Chinese",
+  "ja-JP": "Japanese",
+  "ko-KR": "Korean",
+  "pl-PL": "Polish",
+  es: "Spanish",
+  "sv-SE": "Swedish",
+  "tr-TR": "Turkish"
 };
 
-var Banner = function Banner(_ref) {
-  var text = _ref.text;
-
-  return React.createElement(
-    "h4",
-    null,
-    text
-  );
-};
-
-var LanguageSelector = function LanguageSelector(_ref2) {
-  var id = _ref2.id,
-      languages = _ref2.languages;
-
-  var options = Object.keys(languages).map(function (key) {
-    return React.createElement(
-      "option",
-      { value: key },
-      languages[key],
-      " (",
-      key,
-      ")"
-    );
-  });
-  return React.createElement(
-    "select",
-    { id: id, className: "form-control" },
-    options
-  );
-};
-
-var InputForm = function InputForm(_ref3) {
-  var id = _ref3.id,
-      languages = _ref3.languages,
-      onButtonClick = _ref3.onButtonClick;
-
-  var handleClick = function handleClick() {
-    // console.debug("click");
-    var content = document.getElementById("textInput").value;
-    var language = document.getElementById("languageSelector").value;
-
-    onButtonClick(language, content);
-  };
-
-  return React.createElement(
-    "div",
-    { className: "pb-1" },
-    React.createElement(
-      "div",
-      { className: "mb-2" },
-      React.createElement("textarea", {
-        className: "form-control",
-        id: id,
-        rows: "6",
-        placeholder: "Enter a text item on each line, \r\nspecify a language and then click the Sort button"
-      })
-    ),
-    React.createElement(
-      "div",
-      { className: "mb-2" },
-      React.createElement(LanguageSelector, { id: "languageSelector", languages: languages })
-    ),
-    React.createElement(
-      "div",
-      null,
-      React.createElement(
-        "button",
-        { type: "button", onClick: handleClick },
-        "Sort"
-      )
-    )
-  );
-};
-
-var OutputForm = function OutputForm(_ref4) {
-  var id = _ref4.id;
-
-  return React.createElement("textarea", { id: id, className: "form-control", rows: "6", readOnly: true });
-};
-
-ReactDOM.render(React.createElement(App, null), document.getElementById("root"));
+ReactDOM.render(React.createElement(App, { languages: languages }), document.getElementById("root"));
