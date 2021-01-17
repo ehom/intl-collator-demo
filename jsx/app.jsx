@@ -2,105 +2,74 @@ const APP_NAME = "Intl.Collator Demo";
 
 document.title = APP_NAME;
 
-const App = () => {
-  const languages = {
-    "en-US": "English",
-    "fr": "French",
-    "de": "German",
-    "zh-CN": "Chinese",
-    "ja-JP": "Japanese",
-    "es": "Spanish",
-    "pl-PL": "Polish",
-    "sv-SE": "Swedish",
-    "tr-TR": "Turkish"
-  };
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const processText = (language, text) => {
-    /* console.debug("processText:", locale, text); */
-    const result = text.split("\n").sort(Intl.Collator(language).compare);
-    /* console.debug("result:", result) */
-    document.getElementById("results").value = result.join("\n");
-  };
+    this.state = {
+      input: "",
+      language: this.props.languages[0],
+      result: ""
+    };
 
-  return (
-    <React.Fragment>
-      <div className="jumbotron pt-4 pb-2">
-        <Banner text="Intl.Collator demo" />
-      </div>
-      <div className="row">
-        <div className="col-sm-6">
-          <div className="container border border-light rounded pt-3 pb-2 mb-3">
-            <div className="mb-2">Input:</div>
-            <InputForm
-              id="textInput"
-              languages={languages}
-              onButtonClick={processText}
-            />
-          </div>
-        </div>
-        <div className="col-sm-6">
-          <div className="container border border-light rounded pt-3 pb-4">
-            <div className="mb-2">Output:</div>
-            <OutputForm id="results" />
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
-  );
-};
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-const Banner = ({ text }) => {
-  return <h4>{text}</h4>;
-};
+  handleSubmit(text, language) {
+    console.debug("App: handle Submit", text, language);
 
-const LanguageSelector = ({ id, languages }) => {
-  const options = Object.keys(languages).map((key) => {
+    const result = text
+      .split("\n")
+      .sort(Intl.Collator(language).compare)
+      .join("\n");
+
+    this.setState({
+      input: text,
+      language: language,
+      result: result
+    });
+  }
+
+  render() {
     return (
-      <option value={key}>
-        {languages[key]} ({key})
-      </option>
+      <React.Fragment>
+        <div className="jumbotron pt-4 pb-2">
+          <Banner text="Intl.Collator demo" />
+        </div>
+        <div className="row">
+          <div className="col-sm-6">
+            <div className="container border border-light round pt-3 pb-3">
+              <div className="mb-2">Input:</div>
+              <InputForm
+                languages={this.props.languages}
+                onSubmit={this.handleSubmit}
+              />
+            </div>
+          </div>
+          <div className="col-sm-6">
+            <div className="container border border-light round pt-3 pb-3">
+              <div className="mb-2">Output:</div>
+              <OutputForm text={this.state.result} />
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
     );
-  });
-  return (
-    <select id={id} className="form-control">
-      {options}
-    </select>
-  );
+  }
+}
+
+const languages = {
+  "en-US": "English",
+  fr: "French",
+  de: "German",
+  "zh-CN": "Chinese",
+  "ja-JP": "Japanese",
+  "ko-KR": "Korean",
+  "pl-PL": "Polish",
+  es: "Spanish",
+  "sv-SE": "Swedish",
+  "tr-TR": "Turkish"
 };
 
-const InputForm = ({ id, languages, onButtonClick }) => {
-  const handleClick = () => {
-    // console.debug("click");
-    const content = document.getElementById("textInput").value;
-    const language = document.getElementById("languageSelector").value;
+ReactDOM.render(<App languages={languages} />, document.getElementById("root"));
 
-    onButtonClick(language, content);
-  };
-
-  return (
-    <div className="pb-1">
-      <div className="mb-2">
-        <textarea
-          className="form-control"
-          id={id}
-          rows="6"
-          placeholder="Enter a text item on each line, &#13;&#10;specify a language and then click the Sort button"
-        />
-      </div>
-      <div className="mb-2">
-        <LanguageSelector id="languageSelector" languages={languages} />
-      </div>
-      <div>
-        <button type="button" onClick={handleClick}>
-          Sort
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const OutputForm = ({ id }) => {
-  return <textarea id={id} className="form-control" rows="6" readOnly />;
-};
-
-ReactDOM.render(<App />, document.getElementById("root"));
